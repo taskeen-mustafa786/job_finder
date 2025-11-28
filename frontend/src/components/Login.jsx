@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React,{ useState } from "react";
 
 
 export default function Login() {
@@ -21,7 +21,7 @@ return (
 <input className="input-box" placeholder="Password" type="password" onChange={(e)=>setForm({...form,password:e.target.value})} />
 
 
-<button className="w-full bg-blue-600 text-white py-2 mt-4 rounded">Login</button>
+<button className="w-full bg-black text-white py-2 mt-4 rounded">Login</button>
 </form>
 </div>
 );

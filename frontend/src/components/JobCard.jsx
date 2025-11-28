@@ -1,3 +1,5 @@
+import React from "react";
+
 export default function JobCard({ job }) {
 return (
 <div className="border p-4 rounded shadow">
