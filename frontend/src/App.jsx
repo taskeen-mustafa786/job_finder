@@ -9,16 +9,18 @@ import { Routes, Route } from "react-router-dom";
 
 
 export default function App() {
-return (
-<>
-<Navbar />
-<Routes>
-<Route path="/" element={<Dashboard />} />
-<Route path="/signup" element={<Signup />} />
-<Route path="/login" element={<Login />} />
-<Route path="/jobs" element={<JobResults />} />
-<Route path="/profile" element={<Profile />} />
-</Routes>
-</>
-);
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/jobs" element={<JobResults />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </div>
+    </div>
+  );
 }
