@@ -8,6 +8,8 @@ const [form, setForm] = useState({ name: "", email: "", password: "" });
 const handleSubmit = (e) => {
 e.preventDefault();
 console.log("Signup Data: ", form);
+window.location.href = "/login";
+
 };
 
 

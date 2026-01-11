@@ -8,6 +8,9 @@ const [form, setForm] = useState({ email: "", password: "" });
 const handleSubmit = (e) => {
 e.preventDefault();
 console.log("Login Data: ", form);
+localStorage.setItem("user_id", res.user_id);
+window.location.href = "/";
+
 };
 
 
