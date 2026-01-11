@@ -5,6 +5,8 @@ import Login from "./components/Login";
 import Dashboard from "./pages/Dashboard";
 import JobResults from "./pages/JobResults";
 import Profile from "./pages/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import { Routes, Route } from "react-router-dom";
 
 
@@ -18,7 +20,8 @@ export default function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/jobs" element={<JobResults />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProtectedRoute> <Profile /> </ProtectedRoute> }
+/>
         </Routes>
       </div>
     </div>
