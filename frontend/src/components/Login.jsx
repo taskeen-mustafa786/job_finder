@@ -9,7 +9,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://fictional-space-parakeet-4jjjwprgqqgwc7gvx.github.dev/auth/login", {
+      const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+      const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -23,7 +24,7 @@ export default function Login() {
       const res = await response.json(); // ✅ DEFINE res here
 
       if (!response.ok) {
-        setError(res.detail || "Login failed");
+        setError(res.detail || res.message || "Login failed");
         return;
       }
 
