@@ -1,133 +1,196 @@
-# job_finder
+# AI Job Finder - Simple Job Portal
 
-The AI-powered job finder that matches job listings to users' skills and qualifications.
-
----
-
-## 🔍 Project Overview
-
-**job_finder** helps users discover job opportunities tailored to their skills. It includes a FastAPI backend (with MongoDB) and a React + Vite frontend. The backend exposes authentication, job search, and LinkedIn OAuth endpoints; the frontend provides the UI for signup, login, and browsing results.
+A simple, no-registration job portal that matches job listings to your skills using AI. No login or signup required!
 
 ---
 
-## ⚙️ Architecture
+## 🔍 Features
 
-- **Backend:** FastAPI, MongoDB (pymongo), bcrypt for password hashing, uvicorn for running the app.
-- **Frontend:** React + Vite, Tailwind CSS for styles.
+✨ **Easy Access** - Start searching immediately without registration  
+🤖 **AI-Powered Matching** - Semantic skill matching for accurate results  
+🎯 **Skill Gap Analysis** - Identify skills you need to learn for each job  
+🌍 **Global Jobs** - Browse remote and location-specific opportunities  
+📋 **Simple Form** - Fill out your qualifications to find matching jobs  
+
+---
+
+## 🏗️ Project Structure
+
+```
+job_finder/
+├── backend/
+│   ├── main.py                 # FastAPI application entry point
+│   ├── jobs.py                 # Job search endpoint (no auth required)
+│   ├── ai_engine.py            # Skill extraction & semantic matching
+│   ├── requirements.txt        # Python dependencies
+│   └── ...
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx            # Main app component (simplified routes)
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx     # Simplified navigation
+│   │   │   └── JobCard.jsx    # Job card with match score
+│   │   └── pages/
+│   │       ├── Dashboard.jsx  # Home - Job search form
+│   │       └── JobResults.jsx # Results page
+│   ├── package.json
+│   └── ...
+└── README.md
+```
 
 ---
 
 ## 📋 Prerequisites
 
-- Node.js (16+), npm
-- Python 3.10+
-- MongoDB instance or Atlas cluster
-- (Optional) ngrok or similar if you need public callbacks for OAuth during development
+- **Node.js** 16+ and npm
+- **Python** 3.10+
+- **spaCy** and **sentence-transformers** (installed via requirements.txt)
 
 ---
 
-## 🔧 Setup
+## 🚀 Quick Start
 
-### Backend
+### Backend Setup
 
-1. Create and activate a Python virtual environment:
-
+1. Create virtual environment:
 ```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
 2. Install dependencies:
-
 ```bash
-pip install -r backend/requirements.txt
+cd backend
+pip install -r requirements.txt
 ```
 
-3. Copy and edit environment variables (create `backend/.env`):
-
-```
-MONGO_URI=your_mongo_uri
-SECRET_KEY=replace_with_strong_secret
-LINKEDIN_CLIENT_ID=your_linkedin_client_id
-LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret
-FRONTEND_URL=http://localhost:5173
-```
-
-4. Start the backend:
-
+3. Download spaCy model:
 ```bash
-uvicorn backend.main:app --reload --port 8000
+python -m spacy download en_core_web_sm
 ```
 
-The backend will run at `http://localhost:8000`.
+4. Run the backend:
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-### Frontend
+Backend will be running at `http://localhost:8000`
 
-1. Install dependencies and run dev server:
+### Frontend Setup
 
+1. Install dependencies:
 ```bash
 cd frontend
 npm install
 ```
 
-2. Optionally create a Vite env file at `frontend/.env` with:
-
+2. Create `.env.local` (optional):
 ```
 VITE_API_URL=http://localhost:8000
 ```
 
-3. Start the frontend dev server:
-
+3. Run the development server:
 ```bash
 npm run dev
 ```
 
-The frontend will run at `http://localhost:5173` (Vite default).
+Frontend will be running at `http://localhost:5173`
 
 ---
 
-## ▶️ How to test login/signup (quick)
+## 💻 How to Use
 
-- Signup (curl):
+1. **Home Page (Dashboard)**
+   - Enter your education level, years of experience
+   - List your relevant skills (comma-separated)
+   - Select your preferred country
+   - Click "Find Jobs"
 
-```bash
-curl -X POST -d "email=test@example.com&password=secret" http://localhost:8000/auth/signup
+2. **Results Page**
+   - See all matching jobs with match percentage
+   - View skills you need to learn for each position
+   - Click "View Job" to open the job listing
+   - Click "New Search" to go back and search again
+
+---
+
+## 🔑 API Endpoints
+
+### Job Search (No Authentication Required)
+```
+POST /api/jobs
+Content-Type: application/json
+
+{
+  "skills": ["Python", "React", "Machine Learning"],
+  "country": "Pakistan",
+  "keywords": ["AI", "Backend"],
+  "degree": "BS Computer Science",
+  "experience": 2
+}
 ```
 
-- Login (curl):
-
-```bash
-curl -X POST -d "email=test@example.com&password=secret" http://localhost:8000/auth/login
+**Response:**
+```json
+{
+  "jobs": [
+    {
+      "title": "Senior Python Developer",
+      "company": "TechCorp",
+      "location": "Worldwide",
+      "url": "https://...",
+      "missing_skills": ["Kubernetes", "Docker"],
+      "score": 0.87
+    }
+  ],
+  "total": 25
+}
 ```
 
-Successful login returns JSON with `user_id` which the frontend stores in `localStorage`.
+---
+
+## 🛠️ Technologies Used
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **spaCy** - NLP for skill extraction
+- **sentence-transformers** - Semantic text matching
+- **requests** - HTTP client for job APIs
+- **Pydantic** - Data validation
+- **uvicorn** - ASGI server
+
+### Frontend
+- **React 19** - UI library
+- **Vite** - Build tool and dev server
+- **React Router v7** - Client-side routing
+- **Tailwind CSS** - Styling
+
+### External APIs
+- **Remotive API** - Remote job listings source
 
 ---
 
-## 🧪 Tests & Troubleshooting
+## 📝 What Changed
 
-- If login fails, check browser DevTools (Network tab) for request URL and backend response; common issues:
-  - Wrong API base URL in frontend (ensure `VITE_API_URL` or `http://localhost:8000` is used)
-  - CORS blocked: backend uses permissive CORS in `backend/main.py` during development
-  - Incorrect `MONGO_URI` or DB connectivity
+This version has been completely rewritten to remove all authentication:
 
-- Check backend logs where `uvicorn` is running for tracebacks.
-
----
-
-## 🚀 Deployment tips
-
-- Build the frontend with `npm run build` and serve it with a static file host (Netlify, Vercel, or your own server).
-- Set environment variables securely in your hosting provider (Mongo URI, secrets, LinkedIn keys).
+- ✅ Removed signup and login pages
+- ✅ Removed authentication routes from backend
+- ✅ Removed MongoDB database dependency for users
+- ✅ Removed protected routes
+- ✅ Removed LinkedIn OAuth integration
+- ✅ No user profiles or data storage
+- ✅ Direct job search without registration
+- ✅ All data is session-based (temporary, not persisted)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome — open an issue or submit a pull request with a clear description and tests when applicable.
+Feel free to fork and customize this project for your needs!
 
 ---
 
 ## 📄 License
 
-MIT
+Open source
